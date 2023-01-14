@@ -1,14 +1,14 @@
 /*
 The following HTML routes should be created:
-* `GET /notes` should return the `notes.html` file.
+* `GET /notes` should return the `notes.html` file.  X
 
-* `GET *` should return the `index.html` file.
+* `GET *` should return the `index.html` file.  X
 
 The following API routes should be created:
 
-* `GET /api/notes` should read the `db.json` file and return all saved notes as JSON.
+* `GET /api/notes` should read the `db.json` file and return all saved notes as JSON.     
 
-* `POST /api/notes
+* `POST /api/notes                                 X
 
 */
 
@@ -23,9 +23,11 @@ app.use(express.static('public'));
 
 //creates a route that will serve upp the 'public/notes.html page
 
-app.get('public/notes'),(req, res) =>
+app.get('/notes'),(req, res) =>
 res.sendFile(path.join(__dirname,'notes.html'));
 
+app.get('*'),(req, res) =>
+res.sendFile(path.join(__dirname,'index.html'));
 
 // Post route for when notes gets created in HTML
 
@@ -49,6 +51,13 @@ const addNote = (note) => {
 
     };
 
+ //read the `db.json` file and return all saved notes as JSON.
+    app.get('/api/db', (req,res) => res.json(db)); 
+
     app.listen(PORT, () =>
     console.log(`App is listening at http://localhost:${PORT}`)
     );
+
+   
+
+  
