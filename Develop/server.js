@@ -15,13 +15,16 @@ The following API routes should be created:
 const fs = require('fs');;
 const express = require('express');
 const path = require ('path');
-const { Server } = require('http');
 
+const PORT = 3001;
+const app = express();
 
-//get route for static homepage
+app.use(express.static('public'));
 
-app.get('/notes'),(req, res) =>
-res.sendFile('notes.html');
+//creates a route that will serve upp the 'public/notes.html page
+
+app.get('public/notes'),(req, res) =>
+res.sendFile(path.join(__dirname,'notes.html'));
 
 
 // Post route for when notes gets created in HTML
@@ -38,10 +41,14 @@ app.post('/api/notes', (req, res) => {
 const addNote = (note) => {
     fetch('/api/notes', {
         method: 'POST',
-        headers: { 'Conmtent-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify(note),
     })
         .then((res) => res.json())
         .then((notes) => console.log(notes));
 
     };
+
+    app.listen(PORT, () =>
+    console.log(`App is listening at http://localhost:${PORT}`)
+    );
