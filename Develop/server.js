@@ -1,17 +1,3 @@
-/*
-The following HTML routes should be created:
-* `GET /notes` should return the `notes.html` file.  X
-
-* `GET *` should return the `index.html` file.  X
-
-The following API routes should be created:
-
-* `GET /api/notes` should read the `db.json` file and return all saved notes as JSON.     
-
-* `POST /api/notes                                 X
-
-*/
-
 const fs = require('fs');;
 const express = require('express');
 const path = require ('path');
@@ -26,6 +12,7 @@ app.use(express.static('public'));
 app.get('/notes'),(req, res) =>
 res.sendFile(path.join(__dirname,'notes.html'));
 
+// `GET *` should return the `index.html` file.
 app.get('*'),(req, res) =>
 res.sendFile(path.join(__dirname,'index.html'));
 
