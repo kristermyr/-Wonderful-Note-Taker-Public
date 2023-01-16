@@ -1,11 +1,11 @@
 const express = require('express');
-const fs = require('fs');;
+const fs = require('fs');
 const path = require ('path');
-const notes = require('./db/db.json')
+const notes = require('./db/db.json');
 const PORT = 3001;
 const app = express();
-
 app.use(express.static('public'));
+app.use(express.urlencoded({extended: true }));
 
 //creates a route that will serve upp the 'public/notes.html page
 
@@ -27,11 +27,25 @@ app.get('/api/notes', (req, res) => {
 // Post route for when notes gets created in HTML
 
 app.post('/api/notes', (req, res) => {
-    const newNote = req.body
-    writeToFile(destination, newNote)
- 
-    res.json(`${req.method} received`);
+    console.info(`${req.method} request received to add a note`);
+    let response;
+    if (req.body) {
+        response = {
+            title: req.body.title,
+            text: req.body.text,
+        };
+        res.status(201).json(response);
+      } else {
+        res.status(400).json('Request body must at least contain a note name');
+      }
+      console.log(req.body);
+       notes.push(response);
+    fs.writeFileSync('db/db.json', JSON.stringify(notes));
+    res.json(notes);
+    
 });
+
+
 
 
 
