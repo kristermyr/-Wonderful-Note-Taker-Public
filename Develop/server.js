@@ -42,7 +42,7 @@ const addNote = (note) => {
 
     };
 
- //read the `db.json` file and return all saved notes as JSON.
+ //read the `db.json` file and return all saved notes as JSON
     app.get('/api/db', (req,res) => res.json(db)); 
 
     app.listen(PORT, () =>
