@@ -1,9 +1,11 @@
+const { Router } = require('express');
 const express = require('express');
 const fs = require('fs');
 const path = require ('path');
 const notes = require('./db/db.json');
 const PORT = 3001;
 const app = express();
+app.use(express.json());
 app.use(express.static('public'));
 app.use(express.urlencoded({extended: true }));
 
@@ -31,8 +33,8 @@ app.post('/api/notes', (req, res) => {
     let response;
     if (req.body) {
         response = {
-            title: req.body.title,
-            text: req.body.text,
+          title: req.body.title,
+      text: req.body.text,
         };
         res.status(201).json(response);
       } else {
@@ -44,8 +46,6 @@ app.post('/api/notes', (req, res) => {
     res.json(notes);
     
 });
-
-
 
 
 
