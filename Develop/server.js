@@ -29,7 +29,7 @@ app.post('/api/notes', (req, res) => {
     res.json(`${req.method} received`);
 });
 
-//fetch request to add a new note
+//fetch request to add a new notes
 
 const addNote = (note) => {
     fetch('/api/notes', {
