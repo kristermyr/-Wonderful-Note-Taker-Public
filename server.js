@@ -53,7 +53,7 @@ app.post('/api/notes', (req, res) => {
     });
 });
 
- //read the `db.json` file and return all saved notes as JSON
+ //read the `db.json` file and return all saved notes as JSON.
     app.get('/api/db', (req,res) => res.json(notes)); 
     app.get('/api/', (req,res) => res.json(notes));
     app.get('/notes', (req,res) => res.json(notes));
