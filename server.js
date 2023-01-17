@@ -26,7 +26,7 @@ app.get('/api/notes', (req, res) => {
     res.json(notes);
 });
 
-// Post route for when notes gets created in HTML
+// Post route for when notes gets created in HTML.
 
 app.post('/api/notes', (req, res) => {
     console.info(`${req.method} request received to add a note`);
