@@ -27,24 +27,36 @@ app.get('/api/notes', (req, res) => {
 });
 
 // Post route for when notes gets created in HTML
-let id = notes.length + 1;
 
 app.post('/api/notes', (req, res) => {
     console.info(`${req.method} request received to add a note`);
-    req.body.id = id++;
-    console.log(req.body);
-
-       notes.push(notes);
-    fs.writeFileSync('db/db.json', JSON.stringify(notes), function (err) {
-        if(err) throw err;
+    let response;
+    let id = notes.length +1
+    if (req.body) {
+        response = {
+          title: req.body.title,
+      text: req.body.text,
+      id: id
+        };
+        res.status(201).json(response);
+      } else {
+        res.status(400).json('Request body must at least contain a note name');
+      }
+      console.log(req.body);
+      console.log(notes)
+       notes.push(response);
+    fs.writeFileSync('db/db.json', JSON.stringify(notes));
     res.json(notes);
-            });
+    app.delete('/api/notes/:id', (req, res) => {
+        deleteNote(req.params.id, notes);
+        res.json(true);
+    });
 });
 
  //read the `db.json` file and return all saved notes as JSON
     app.get('/api/db', (req,res) => res.json(notes)); 
     app.get('/api/', (req,res) => res.json(notes));
-    app.get('/api/notes/:id', (req,res) => res.json(notes));
+    app.get('/notes', (req,res) => res.json(notes));
 
     app.listen(PORT, () =>
     console.log(`App is listening at http://localhost:${PORT}`)
