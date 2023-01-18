@@ -52,23 +52,24 @@ app.post('/api/notes', (req, res) => {
 });
 
 app.delete("/api/notes/:id", function (req, res) {
-    const notesId = JSON.parse(req.params.id)
-    console.log(notesId)
-    fs.readFile(__dirname + "/db/db.json", 
-    function (error, notes) {
+  const notesId = JSON.parse(req.params.id)
+  console.log(notesId)
+  fs.readFile(__dirname + "/db/db.json", 'utf8', function (error, notes) {
+    if (error) {
+      return console.log(error)
+    }
+    notes = JSON.parse(notes)
+
+    notes = notes.filter(val => val.id !== notesId)
+
+    fs.writeFile(__dirname + "/db/db.json", JSON.stringify(notes), function (error, data) {
       if (error) {
-        return console.log(error)
+        return error
       }
-      notes = JSON.parse(notes)
-      notes = notes.filter(val => val.id !== notesId)
-  
-      fs.writeFile(__dirname + "/db/db.json", JSON.stringify(notes), 
-      function (error, notes) {
-        if (error) {return error}
-        res.json(notes)
-      })
+      res.json(notes)
     })
   })
+})
  //read the `db.json` file and return all saved notes as JSON.
     app.get('/api/db', (req,res) => res.json(notes)); 
     app.get('/api/', (req,res) => res.json(notes));
