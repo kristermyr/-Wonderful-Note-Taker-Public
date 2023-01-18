@@ -52,15 +52,15 @@ app.post('/api/notes', (req, res) => {
 });
 
 app.delete("/api/notes/:id", function (req, res) {
-  const notesId = JSON.parse(req.params.id)
-  console.log(notesId)
+  const noteId = JSON.parse(req.params.id)
+  console.log(noteId)
   fs.readFile(__dirname + "/db/db.json", 'utf8', function (error, notes) {
     if (error) {
       return console.log(error)
     }
     notes = JSON.parse(notes)
 
-    notes = notes.filter(val => val.id !== notesId)
+    notes = notes.filter(val => val.id !== noteId)
 
     fs.writeFile(__dirname + "/db/db.json", JSON.stringify(notes), function (error, data) {
       if (error) {
