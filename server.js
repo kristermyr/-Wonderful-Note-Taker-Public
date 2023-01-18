@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const express = require('express');
 const fs = require('fs');
+const { Server } = require('http');
 const path = require ('path');
 const notes = require('./db/db.json');
 const PORT = process.env.PORT || 3001
@@ -31,12 +32,12 @@ app.get('/api/notes', (req, res) => {
 app.post('/api/notes', (req, res) => {
     console.info(`${req.method} request received to add a note`);
     let response;
-    let id = notes.length +1
+    let noteId = notes.length +1
     if (req.body) {
         response = {
           title: req.body.title,
       text: req.body.text,
-      id: id
+      id: noteId
         };
         res.status(201).json(response);
       } else {
@@ -47,12 +48,27 @@ app.post('/api/notes', (req, res) => {
        notes.push(response);
     fs.writeFileSync('db/db.json', JSON.stringify(notes));
     res.json(notes);
-    app.delete('/api/notes/:id', (req, res) => {
-        deleteNote(req.params.id, notes);
-        res.json(true);
-    });
+    
 });
 
+app.delete("/api/notes/:id", function (req, res) {
+    const notesId = JSON.parse(req.params.id)
+    console.log(notesId)
+    fs.readFile(__dirname + "/db/db.json", 
+    function (error, notes) {
+      if (error) {
+        return console.log(error)
+      }
+      notes = JSON.parse(notes)
+      notes = notes.filter(val => val.id !== notesId)
+  
+      fs.writeFile(__dirname + "/db/db.json", JSON.stringify(notes), 
+      function (error, notes) {
+        if (error) {return error}
+        res.json(notes)
+      })
+    })
+  })
  //read the `db.json` file and return all saved notes as JSON.
     app.get('/api/db', (req,res) => res.json(notes)); 
     app.get('/api/', (req,res) => res.json(notes));
