@@ -43,11 +43,12 @@ app.post('/api/notes', (req, res) => {
       } else {
         res.status(400).json('Request body must at least contain a note name');
       }
-      console.log(req.body);
-      console.log(notes)
+   
        notes.push(response);
+      
     fs.writeFileSync('db/db.json', JSON.stringify(notes));
-    res.json(notes);
+    
+  
     
 });
 
@@ -66,7 +67,7 @@ app.delete("/api/notes/:id", function (req, res) {
       if (error) {
         return error
       }
-      res.json(notes)
+    
     })
   })
 })
