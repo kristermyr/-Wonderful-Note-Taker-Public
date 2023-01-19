@@ -24,8 +24,15 @@ app.get('*'),(req, res) =>
 res.sendFile(path.join(__dirname,'index.html'));
 
 app.get('/api/notes', (req, res) => {
-    res.json(notes);
-});
+    fs.readFile(__dirname + "/db/db.json", 'utf8', function (error, notes) {
+      if (error) {
+        return console.log(error)
+      }
+      notes = JSON.parse(notes)
+  
+      return res.json(notes)
+    })
+  });
 
 // Post route for when notes gets created in HTML.
 
