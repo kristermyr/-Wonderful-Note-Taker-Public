@@ -1,21 +1,28 @@
-const { Router } = require('express');
+
+//requires
+const { Router } = require('express');      
 const express = require('express');
-const fs = require('fs');
+const fs = require('fs');                  
 const { Server } = require('http');
 const path = require ('path');
 const notes = require('./db/db.json');
+
+//sets port
 const PORT = process.env.PORT || 3001
 const app = express();
+
+// parse incoming JSON
 app.use(express.json());
+// use express static on public folder
 app.use(express.static('public'));
 app.use(express.urlencoded({extended: true }));
 
-//creates a route that will serve upp the 'public/notes.html page
+//will serve upp the 'public/notes.html page
 
 app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, './public/notes.html'));
 });
-
+//will serve upp the ./public/index.html page
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, './public/index.html'));
 });
@@ -39,9 +46,9 @@ app.get('/api/notes', (req, res) => {
 app.post('/api/notes', (req, res) => {
     console.info(`${req.method} request received to add a note`);
     let response;
-    let noteId = notes.length +1
+    let noteId = notes.length +1  //code to create unique Id for each note
     if (req.body) {
-        response = {
+        response = {             
           title: req.body.title,
       text: req.body.text,
       id: noteId
@@ -59,7 +66,7 @@ app.post('/api/notes', (req, res) => {
     
 });
 
-app.delete("/api/notes/:id", function (req, res) {
+app.delete("/api/notes/:id", function (req, res) {          // deletes created note
   const noteId = JSON.parse(req.params.id)
   console.log(noteId)
   fs.readFile(__dirname + "/db/db.json", 'utf8', function (error, notes) {
@@ -83,6 +90,8 @@ app.delete("/api/notes/:id", function (req, res) {
     app.get('/api/', (req,res) => res.json(notes));
     app.get('/notes', (req,res) => res.json(notes));
 
+
+    // listener
     app.listen(PORT, () =>
     console.log(`App is listening at http://localhost:${PORT}`)
     );
